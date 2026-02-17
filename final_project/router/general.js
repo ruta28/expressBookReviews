@@ -81,21 +81,22 @@ public_users.get('/author/:author', async function (req, res)
 
 
 // Get all books based on title
-public_users.get('/title/:title',function (req, res) {
-  //Write your code here
+// Get all books based on title using async/await with Axios
+public_users.get('/title/:title', async function (req, res)
+{
   const title = req.params.title;
-  let result = {};
 
-  Object.keys(books).forEach((key) =>
+  try
   {
-    if (books[key].title === title)
-    {
-      result[key] = books[key];
-    }
-  });
-
-  return res.status(200).json(result);
+    const response = await axios.get(`http://localhost:5000/title/${title}`);
+    return res.status(200).json(response.data);
+  }
+  catch (error)
+  {
+    return res.status(500).json({ message: "Error retrieving books by title" });
+  }
 });
+
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
